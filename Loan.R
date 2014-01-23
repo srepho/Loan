@@ -11,3 +11,4 @@ fnt<-fntrain[, -hcorr]
 fntest<-fntest[,-hcorr]
 loss<-train$loss
 trn<-cbind(fnt, loss)
+trnIndex<-createDataPartition()
