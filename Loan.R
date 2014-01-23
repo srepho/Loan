@@ -1,8 +1,13 @@
-library(ggplot2)
 library(caret)
-train<-read.csv("F:/Loans/train.csv", header=T)
-test<-read.csv("F:/Loans/test.csv", header=T)
-sampsub<-read.csv("F:/Loans/sampleSubmission.csv", header=T)
-function clean(){
-  
-}
+pp<-preProcess(train, method=c("BoxCox", "medianImpute"))
+ntrain<-predict(pp, train)
+ntest<-predict(pp, test)
+nzv<-nearZeroVar(ntrain)
+fntrain<-ntrain[,-nzv]
+fntest<-ntest[, -nzv]
+traincorr<-cor(fntrain)
+hcorr<-findCorrelation(traincorr)
+fnt<-fntrain[, -hcorr]
+fntest<-fntest[,-hcorr]
+loss<-train$loss
+trn<-cbind(fnt, loss)
